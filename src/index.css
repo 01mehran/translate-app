@@ -1,5 +1,20 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
+  --color-primary-100: #242738;
+  --color-primary-200: #212533;
+
+  --color-sky: #3762e4;
+  --color-grey-100: #4c5562;
+  --color-grey-200: #434b58;
+
   --color-purple: rgb(37, 5, 37);
+
+  --breakpoint-medium: 53rem;
+}
+
+@layer components {
+  .lan {
+    @apply hover:bg-grey-100 cursor-pointer rounded-md px-2 py-0.5 capitalize hover:text-white;
+  }
 }
