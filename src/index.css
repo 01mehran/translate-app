@@ -17,4 +17,7 @@
   .lan {
     @apply hover:bg-grey-100 cursor-pointer rounded-md px-2 py-0.5 capitalize hover:text-white;
   }
+  .icons {
+    @apply text-grey-100 border-grey-100 cursor-pointer rounded-xl border-2 p-2;
+  }
 }

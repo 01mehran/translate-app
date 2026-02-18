@@ -1,3 +1,7 @@
+//Icons;
+import { FiCopy } from 'react-icons/fi';
+import { HiSpeakerWave } from 'react-icons/hi2';
+
 export default function Home() {
   return (
     <section className="to-purple relative top-1/2 h-dvh bg-linear-to-b from-black">
@@ -15,7 +19,7 @@ export default function Home() {
 
       <main className="medium:flex-row absolute top-1/2 left-1/2 flex w-full max-w-[95vw] -translate-1/2 flex-col gap-5">
         {/* Detect Language Box */}
-        <div className="bg-primary-100 border-grey-100 medium:h-84 h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
+        <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
           <header className="text-grey-100 border-b-grey-200 flex items-center space-x-3 border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap sm:space-x-4">
             <p className="cursor-pointer capitalize">Detect Language</p>
             <p className="lan">english</p>
@@ -25,10 +29,18 @@ export default function Home() {
             </select>
           </header>
 
-          <textarea className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Similique,
-            itaque.
-          </textarea>
+          <textarea className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"></textarea>
+
+          <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-center justify-between px-4 sm:px-8">
+            <article className="flex items-center space-x-2">
+              <span className="icons transition-all duration-300 hover:scale-105">
+                <HiSpeakerWave />
+              </span>
+              <span className="icons transition-all duration-300 hover:scale-105">
+                <FiCopy />
+              </span>
+            </article>
+          </footer>
         </div>
       </main>
     </section>
