@@ -31,7 +31,7 @@ export default function Home() {
 
           <textarea className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"></textarea>
 
-          <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-center justify-between px-4 sm:px-8">
+          <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
             <article className="flex items-center space-x-2">
               <span className="icons transition-all duration-300 hover:scale-105">
                 <HiSpeakerWave />
@@ -41,10 +41,13 @@ export default function Home() {
               </span>
             </article>
 
-            <article className="flex flex-col-reverse">
+            <article className="medium:gap-4 flex flex-col-reverse items-end gap-2">
               <button className="bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2">
                 Translate
               </button>
+              <div className="text-grey-100 text-[12px] font-medium">
+                <span>19</span>/<span>500</span>
+              </div>
             </article>
           </footer>
         </div>
