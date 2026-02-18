@@ -40,6 +40,12 @@ export default function Home() {
                 <FiCopy />
               </span>
             </article>
+
+            <article className="flex flex-col-reverse">
+              <button className="bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2">
+                Translate
+              </button>
+            </article>
           </footer>
         </div>
       </main>
