@@ -1,5 +1,6 @@
 //Icons;
 import { FiCopy } from 'react-icons/fi';
+import { GoArrowSwitch } from 'react-icons/go';
 import { HiSpeakerWave } from 'react-icons/hi2';
 
 export default function Home() {
@@ -48,6 +49,36 @@ export default function Home() {
               <div className="text-grey-100 text-[12px] font-medium">
                 <span>19</span>/<span>500</span>
               </div>
+            </article>
+          </footer>
+        </div>
+
+        {/* Transleted Box */}
+        <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
+          <header className="text-grey-100 border-b-grey-200 flex items-center justify-between border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap">
+            <div className="flex space-x-3 sm:space-x-4">
+              <p className="lan">english</p>
+              <p className="lan">spanish</p>
+              <select className="cursor-pointer border-0 outline-0">
+                <option value="Spanish">Spanish</option>
+              </select>
+            </div>
+
+            <div className="border-grey-200 cursor-pointer rounded-xl border-2 px-2 py-1 text-lg transition-all duration-300 hover:scale-105">
+              <GoArrowSwitch />
+            </div>
+          </header>
+
+          <textarea className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"></textarea>
+
+          <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
+            <article className="flex items-center space-x-2">
+              <span className="icons transition-all duration-300 hover:scale-105">
+                <HiSpeakerWave />
+              </span>
+              <span className="icons transition-all duration-300 hover:scale-105">
+                <FiCopy />
+              </span>
             </article>
           </footer>
         </div>
