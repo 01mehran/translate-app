@@ -9,11 +9,18 @@ import { useRef } from 'react';
 
 export default function Home() {
   const fromLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const toLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  const copyToClipboard = async () => {
+  const copyToClipboard = () => {
     if (!fromLangTextAreaRef.current) return;
 
     navigator.clipboard.writeText(fromLangTextAreaRef.current.value);
+  };
+
+  const copyToClipboard2 = () => {
+    if (!fromLangTextAreaRef.current) return;
+
+    navigator.clipboard.writeText(toLangTextAreaRef.current!.value);
   };
 
   return (
@@ -95,14 +102,20 @@ export default function Home() {
             </div>
           </header>
 
-          <textarea className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"></textarea>
+          <textarea
+            ref={toLangTextAreaRef}
+            className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
+          ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
             <article className="flex items-center space-x-2">
               <span className="icons transition-all duration-300 hover:scale-105">
                 <HiSpeakerWave />
               </span>
-              <span className="icons transition-all duration-300 hover:scale-105">
+              <span
+                onClick={copyToClipboard2}
+                className="icons transition-all duration-300 hover:scale-105"
+              >
                 <FiCopy />
               </span>
             </article>
