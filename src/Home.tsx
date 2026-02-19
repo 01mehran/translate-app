@@ -1,7 +1,10 @@
-//Icons;
+// Icons;
 import { FiCopy } from 'react-icons/fi';
 import { GoArrowSwitch } from 'react-icons/go';
 import { HiSpeakerWave } from 'react-icons/hi2';
+
+// Languages;
+import { languages } from './data/languages';
 
 export default function Home() {
   return (
@@ -26,7 +29,9 @@ export default function Home() {
             <p className="lan">english</p>
             <p className="lan">spanish</p>
             <select className="cursor-pointer border-0 outline-0">
-              <option value="Spanish">Spanish</option>
+              {languages.map((lan) => (
+                <option value={lan.code}>{lan.name}</option>
+              ))}
             </select>
           </header>
 
@@ -60,7 +65,9 @@ export default function Home() {
               <p className="lan">english</p>
               <p className="lan">spanish</p>
               <select className="cursor-pointer border-0 outline-0">
-                <option value="Spanish">Spanish</option>
+                {languages.map((lan) => (
+                  <option value={lan.code}>{lan.name}</option>
+                ))}
               </select>
             </div>
 
