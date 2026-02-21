@@ -2,14 +2,33 @@
 import { FiCopy } from 'react-icons/fi';
 import { GoArrowSwitch } from 'react-icons/go';
 import { HiSpeakerWave } from 'react-icons/hi2';
+import { PiSpinnerGapBold } from 'react-icons/pi';
 
 // Languages;
 import { languages } from './data/languages';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
+import axios from 'axios';
+
+interface TranslationResponse {
+  responseData: {
+    translatedText: string;
+    match?: number;
+  };
+  responseStatus: number;
+  responseDetails?: string;
+  matches?: any[];
+}
 
 export default function Home() {
   const fromLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const toLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  const [inputText, setInputText] = useState<string>('');
+  const [fromLang, setFromLang] = useState<string>('en');
+  const [toLang, setToLang] = useState<string>('fa');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [translatedText, setTranslatedText] = useState<string>('');
 
   const copyToClipboard = () => {
     if (!fromLangTextAreaRef.current) return;
@@ -21,6 +40,53 @@ export default function Home() {
     if (!fromLangTextAreaRef.current) return;
 
     navigator.clipboard.writeText(toLangTextAreaRef.current!.value);
+  };
+
+  const handleTranslate = async () => {
+    if (!inputText.trim()) {
+      setError('Please write something');
+    }
+
+    setIsLoading(true);
+    setError(null);
+    try {
+      const { data } = await axios<TranslationResponse>(
+        `https://api.mymemory.translated.net/get?`,
+        {
+          params: {
+            q: inputText,
+            langpair: `${fromLang}|${toLang}`,
+            mt: 1,
+          },
+
+          headers: {
+            Accept: 'application/json',
+          },
+        },
+      );
+      if (data.responseStatus === 200) {
+        setTranslatedText(data.responseData.translatedText);
+      } else {
+        throw new Error(`${data.responseDetails}` || 'translate faild');
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.code === 'ECONNABORTED') {
+          setError('try again');
+        } else if (err.response) {
+          setError(`server error ${err.response.status}`);
+        } else if (err.request) {
+          setError('network error!');
+        } else {
+          setError(`error: ${err.message}`);
+        }
+      } else {
+        setError('unknown error');
+      }
+      console.error('Translation error:', err);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -44,9 +110,13 @@ export default function Home() {
             <p className="cursor-pointer capitalize">Detect Language</p>
             <p className="lan">english</p>
             <p className="lan">spanish</p>
-            <select className="cursor-pointer border-0 outline-0">
+            <select
+              onChange={(e) => setFromLang(e.target.value)}
+              value={fromLang}
+              className="cursor-pointer border-0 outline-0"
+            >
               {languages.map((lan) => (
-                <option key={lan.code} value={lan.name}>
+                <option key={lan.code} value={lan.code}>
                   {lan.name}
                 </option>
               ))}
@@ -55,6 +125,8 @@ export default function Home() {
 
           <textarea
             ref={fromLangTextAreaRef}
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
             className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
           ></textarea>
 
@@ -72,13 +144,25 @@ export default function Home() {
             </article>
 
             <article className="medium:gap-4 flex flex-col-reverse items-end gap-2">
-              <button className="bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2">
-                Translate
+              <button
+                disabled={isLoading}
+                onClick={handleTranslate}
+                className={` ${isLoading && 'pointer-events-none cursor-not-allowed opacity-80'} bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2`}
+              >
+                {isLoading ? (
+                  <PiSpinnerGapBold className="animate-spin" />
+                ) : (
+                  'Translate'
+                )}
               </button>
               <div className="text-grey-100 text-[12px] font-medium">
                 <span>19</span>/<span>500</span>
               </div>
             </article>
+
+            <span className="absolute bottom-1 left-34 text-lg font-medium text-red-600">
+              {error}
+            </span>
           </footer>
         </div>
 
@@ -88,9 +172,13 @@ export default function Home() {
             <div className="flex space-x-3 sm:space-x-4">
               <p className="lan">english</p>
               <p className="lan">spanish</p>
-              <select className="cursor-pointer border-0 outline-0">
+              <select
+                onChange={(e) => setToLang(e.target.value)}
+                value={toLang}
+                className="cursor-pointer border-0 outline-0"
+              >
                 {languages.map((lan) => (
-                  <option key={lan.code} value={lan.name}>
+                  <option key={lan.code} value={lan.code}>
                     {lan.name}
                   </option>
                 ))}
@@ -105,6 +193,7 @@ export default function Home() {
           <textarea
             ref={toLangTextAreaRef}
             className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
+            defaultValue={translatedText}
           ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
