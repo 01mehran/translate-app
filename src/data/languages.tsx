@@ -1,9 +1,6 @@
-export interface Language {
-  code: string;
-  name: string;
-}
+import type { ILanguages } from '../types/translation.types';
 
-export const languages: Language[] = [
+export const languages: ILanguages[] = [
   { code: 'fa', name: 'فارسی' },
   { code: 'en', name: 'English' },
   { code: 'ar', name: 'العربية' },

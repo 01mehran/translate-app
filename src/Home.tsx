@@ -14,16 +14,10 @@ import { PiSpinnerGapBold } from 'react-icons/pi';
 import { languages } from './data/languages';
 
 // Types;
-interface TranslationResponse {
-  responseData: {
-    translatedText: string;
-    match?: number;
-  };
-  responseStatus: number;
-  responseDetails?: string;
-  quotaFinished: boolean;
-  exception_code: number | null;
-}
+import type {
+  ITranslateText,
+  ITranslationResponse,
+} from './types/translation.types';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -39,8 +33,13 @@ export default function Home() {
   useEffect(() => {
     const initialTranslate = async () => {
       try {
-        await translateText('Hello, how are you?', 'en', 'fr');
-        setInputText('Hello, how are you?');
+        await translateText({
+          text: 'سلام چطوری؟',
+          sourceLang: 'fa',
+          targetLang: 'en',
+        });
+
+        setInputText('سلام چطوری؟');
       } catch (err) {
         console.error(err);
       }
@@ -49,11 +48,11 @@ export default function Home() {
     initialTranslate();
   }, []);
 
-  const translateText = async (
-    text: string,
-    sourceLang: string,
-    targetLang: string,
-  ) => {
+  const translateText = async ({
+    text,
+    sourceLang,
+    targetLang,
+  }: ITranslateText) => {
     if (!text.trim()) {
       setError('Please enter some text to translate');
       return;
@@ -64,7 +63,7 @@ export default function Home() {
     setTranslatedText('');
 
     try {
-      const { data } = await axios.get<TranslationResponse>(
+      const { data } = await axios.get<ITranslationResponse>(
         'https://api.mymemory.translated.net/get',
         {
           params: {
@@ -124,7 +123,11 @@ export default function Home() {
   };
 
   const handleTranslate = async () => {
-    translateText(inputText, fromLang, toLang);
+    translateText({
+      text: inputText,
+      sourceLang: fromLang,
+      targetLang: toLang,
+    });
   };
 
   const copyInput = () => {
@@ -179,8 +182,9 @@ export default function Home() {
             ref={fromLangTextAreaRef}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
+            className="text-md placeholder:tracking-none placeholder:text-grey-100 h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium"
             disabled={isLoading}
+            placeholder="Write some text"
           ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
@@ -241,9 +245,10 @@ export default function Home() {
 
           <textarea
             ref={toLangTextAreaRef}
-            className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
+            className="text-md placeholder:tracking-none placeholder:text-grey-100 h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium"
             value={translatedText}
             readOnly
+            placeholder="Translation"
           ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
