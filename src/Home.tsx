@@ -1,3 +1,9 @@
+// Libraries;
+import axios from 'axios';
+
+// Hooks;
+import { useEffect, useRef, useState } from 'react';
+
 // Icons;
 import { FiCopy } from 'react-icons/fi';
 import { GoArrowSwitch } from 'react-icons/go';
@@ -6,9 +12,8 @@ import { PiSpinnerGapBold } from 'react-icons/pi';
 
 // Languages;
 import { languages } from './data/languages';
-import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 
+// Types;
 interface TranslationResponse {
   responseData: {
     translatedText: string;
@@ -16,13 +21,11 @@ interface TranslationResponse {
   };
   responseStatus: number;
   responseDetails?: string;
-  matches?: any[];
+  quotaFinished: boolean;
+  exception_code: number | null;
 }
 
 export default function Home() {
-  const fromLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
-  const toLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
-
   const [inputText, setInputText] = useState<string>('');
   const [fromLang, setFromLang] = useState<string>('en');
   const [toLang, setToLang] = useState<string>('fr');
@@ -30,29 +33,14 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [translatedText, setTranslatedText] = useState<string>('');
 
+  const fromLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
+  const toLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
+
   useEffect(() => {
     const initialTranslate = async () => {
       try {
-        const { data } = await axios<TranslationResponse>(
-          `https://api.mymemory.translated.net/get?`,
-          {
-            params: {
-              q: 'Hello, how are you?',
-              langpair: `en|fr`,
-              mt: 1,
-            },
-
-            headers: {
-              Accept: 'application/json',
-            },
-          },
-        );
-        if (data.responseStatus === 200) {
-          setInputText('Hello, how are you?');
-          setTranslatedText(data.responseData.translatedText);
-        } else {
-          throw new Error(`${data.responseDetails}` || 'translate faild');
-        }
+        await translateText('Hello, how are you?', 'en', 'fr');
+        setInputText('Hello, how are you?');
       } catch (err) {
         console.error(err);
       }
@@ -61,62 +49,95 @@ export default function Home() {
     initialTranslate();
   }, []);
 
-  const copyToClipboard = () => {
-    if (!fromLangTextAreaRef.current) return;
-
-    navigator.clipboard.writeText(fromLangTextAreaRef.current.value);
-  };
-
-  const copyToClipboard2 = () => {
-    if (!fromLangTextAreaRef.current) return;
-
-    navigator.clipboard.writeText(toLangTextAreaRef.current!.value);
-  };
-
-  const handleTranslate = async () => {
-    if (!inputText.trim()) {
-      setError('Please write something');
+  const translateText = async (
+    text: string,
+    sourceLang: string,
+    targetLang: string,
+  ) => {
+    if (!text.trim()) {
+      setError('Please enter some text to translate');
+      return;
     }
 
     setIsLoading(true);
     setError(null);
+    setTranslatedText('');
+
     try {
-      const { data } = await axios<TranslationResponse>(
-        `https://api.mymemory.translated.net/get?`,
+      const { data } = await axios.get<TranslationResponse>(
+        'https://api.mymemory.translated.net/get',
         {
           params: {
-            q: inputText,
-            langpair: `${fromLang}|${toLang}`,
+            q: text,
+            langpair: `${sourceLang}|${targetLang}`,
             mt: 1,
+            de: 'mehranmohamadi1311@gmail.com',
           },
-
           headers: {
             Accept: 'application/json',
           },
         },
       );
-      if (data.responseStatus === 200) {
-        setTranslatedText(data.responseData.translatedText);
-      } else {
-        throw new Error(`${data.responseDetails}` || 'translate faild');
+
+      if (data.responseStatus !== 200) {
+        let msg = 'Translation failed';
+
+        if (data.quotaFinished) {
+          msg = 'Daily quota exceeded (MyMemory limit reached)';
+        } else if (data.responseDetails) {
+          msg = `Server error: ${data.responseDetails}`;
+        }
+
+        throw new Error(msg);
       }
+
+      setTranslatedText(
+        data.responseData.translatedText || '(No translation available)',
+      );
     } catch (err) {
+      let errorMessage = 'An unknown error occurred';
+
       if (axios.isAxiosError(err)) {
         if (err.code === 'ECONNABORTED') {
-          setError('try again');
+          errorMessage = 'Request timed out. Please try again.';
+        } else if (
+          err.response?.status === 429 ||
+          err.response?.status === 403
+        ) {
+          errorMessage = 'Quota exceeded or access restricted.';
         } else if (err.response) {
-          setError(`server error ${err.response.status}`);
+          errorMessage = `Server error (${err.response.status})`;
         } else if (err.request) {
-          setError('network error!');
+          errorMessage = 'Network error. Please check your connection.';
         } else {
-          setError(`error: ${err.message}`);
+          errorMessage = err.message || 'Unexpected error';
         }
-      } else {
-        setError('unknown error');
+      } else if (err instanceof Error) {
+        errorMessage = err.message;
       }
-      console.error('Translation error:', err);
+
+      setError(errorMessage);
+      console.error('Translation faild', err);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleTranslate = async () => {
+    translateText(inputText, fromLang, toLang);
+  };
+
+  const copyInput = () => {
+    if (fromLangTextAreaRef.current) {
+      fromLangTextAreaRef.current.select();
+      navigator.clipboard.writeText(fromLangTextAreaRef.current.value);
+    }
+  };
+
+  const copyOutput = () => {
+    if (toLangTextAreaRef.current) {
+      toLangTextAreaRef.current.select();
+      navigator.clipboard.writeText(toLangTextAreaRef.current.value);
     }
   };
 
@@ -159,6 +180,7 @@ export default function Home() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
+            disabled={isLoading}
           ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
@@ -168,7 +190,7 @@ export default function Home() {
               </span>
               <span
                 className="icons transition-all duration-300 hover:scale-105"
-                onClick={copyToClipboard}
+                onClick={copyInput}
               >
                 <FiCopy />
               </span>
@@ -190,10 +212,6 @@ export default function Home() {
                 <span>19</span>/<span>500</span>
               </div>
             </article>
-
-            <span className="absolute bottom-1 left-34 text-lg font-medium text-red-600">
-              {error}
-            </span>
           </footer>
         </div>
 
@@ -224,7 +242,8 @@ export default function Home() {
           <textarea
             ref={toLangTextAreaRef}
             className="text-md h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0"
-            defaultValue={translatedText}
+            value={translatedText}
+            readOnly
           ></textarea>
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
@@ -233,7 +252,7 @@ export default function Home() {
                 <HiSpeakerWave />
               </span>
               <span
-                onClick={copyToClipboard2}
+                onClick={copyOutput}
                 className="icons transition-all duration-300 hover:scale-105"
               >
                 <FiCopy />
@@ -241,6 +260,12 @@ export default function Home() {
             </article>
           </footer>
         </div>
+
+        {error && (
+          <span className="absolute -bottom-12 left-1/2 -translate-1/2 bg-linear-to-b from-red-500 to-red-700 bg-clip-text text-sm font-medium tracking-normal text-nowrap text-transparent">
+            {error}
+          </span>
+        )}
       </main>
     </section>
   );
