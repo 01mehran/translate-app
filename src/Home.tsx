@@ -6,7 +6,7 @@ import { PiSpinnerGapBold } from 'react-icons/pi';
 
 // Languages;
 import { languages } from './data/languages';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 
 interface TranslationResponse {
@@ -25,10 +25,41 @@ export default function Home() {
 
   const [inputText, setInputText] = useState<string>('');
   const [fromLang, setFromLang] = useState<string>('en');
-  const [toLang, setToLang] = useState<string>('fa');
+  const [toLang, setToLang] = useState<string>('fr');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [translatedText, setTranslatedText] = useState<string>('');
+
+  useEffect(() => {
+    const initialTranslate = async () => {
+      try {
+        const { data } = await axios<TranslationResponse>(
+          `https://api.mymemory.translated.net/get?`,
+          {
+            params: {
+              q: 'Hello, how are you?',
+              langpair: `en|fr`,
+              mt: 1,
+            },
+
+            headers: {
+              Accept: 'application/json',
+            },
+          },
+        );
+        if (data.responseStatus === 200) {
+          setInputText('Hello, how are you?');
+          setTranslatedText(data.responseData.translatedText);
+        } else {
+          throw new Error(`${data.responseDetails}` || 'translate faild');
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    initialTranslate();
+  }, []);
 
   const copyToClipboard = () => {
     if (!fromLangTextAreaRef.current) return;
