@@ -5,8 +5,9 @@ import axios from 'axios';
 import { useEffect, useRef, useState } from 'react';
 
 // Components:
-import Textarea from './components/textarea';
+import Header from './components/Header';
 import SelectLanguages from './components/SelectLanguages';
+import Textarea from './components/textarea';
 
 // Icons;
 import { FiCopy } from 'react-icons/fi';
@@ -150,14 +151,7 @@ export default function Home() {
       {/* bg-image */}
       <div className="bg-fill h-1/3 bg-[url(./assets/images/mobile-hero-img.jpg)] bg-cover bg-top bg-no-repeat md:h-1/2 md:bg-[url(./assets/images/desktop-hero-img.jpg)] md:bg-cover"></div>
 
-      <header className="medium:top-20 absolute top-15 left-1/2 -translate-1/2 transform">
-        <h1 className="medium:text-5xl text-3xl font-bold tracking-wide text-nowrap text-white/90">
-          Translate{' '}
-          <span className="bg-linear-to-r from-[#ba74ca] to-[#9c73e7] bg-clip-text tracking-normal text-transparent">
-            App
-          </span>
-        </h1>
-      </header>
+      <Header />
 
       <main className="medium:flex-row absolute top-1/2 left-1/2 flex w-full max-w-[95vw] -translate-1/2 flex-col gap-5">
         {/* Detect Language Box */}
