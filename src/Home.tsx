@@ -8,11 +8,10 @@ import { useEffect, useRef, useState } from 'react';
 import Header from './components/Header';
 import SelectLanguages from './components/SelectLanguages';
 import Textarea from './components/textarea';
+import ActionButtons from './components/ActionButtons';
 
 // Icons;
-import { FiCopy } from 'react-icons/fi';
 import { GoArrowSwitch } from 'react-icons/go';
-import { HiSpeakerWave } from 'react-icons/hi2';
 import { PiSpinnerGapBold } from 'react-icons/pi';
 
 // Types;
@@ -173,17 +172,7 @@ export default function Home() {
           />
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
-            <article className="flex items-center space-x-2">
-              <span className="icons transition-all duration-300 hover:scale-105">
-                <HiSpeakerWave />
-              </span>
-              <span
-                className="icons transition-all duration-300 hover:scale-105"
-                onClick={copyInput}
-              >
-                <FiCopy />
-              </span>
-            </article>
+            <ActionButtons handleCopy={copyInput} disabled={isLoading} />
 
             <article className="medium:gap-4 flex flex-col-reverse items-end gap-2">
               <button
@@ -226,17 +215,7 @@ export default function Home() {
           />
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
-            <article className="flex items-center space-x-2">
-              <span className="icons transition-all duration-300 hover:scale-105">
-                <HiSpeakerWave />
-              </span>
-              <span
-                onClick={copyOutput}
-                className="icons transition-all duration-300 hover:scale-105"
-              >
-                <FiCopy />
-              </span>
-            </article>
+            <ActionButtons handleCopy={copyOutput} disabled={isLoading} />
           </footer>
         </div>
 

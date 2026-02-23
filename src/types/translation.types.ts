@@ -35,3 +35,8 @@ export interface ISelectLanguagesProps {
   onChange: (value: string) => void;
   value: string;
 }
+
+export interface IActionButtonsProps {
+  handleCopy: () => void;
+  disabled: boolean;
+}
