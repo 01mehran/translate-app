@@ -18,6 +18,7 @@ import type {
   ITranslateText,
   ITranslationResponse,
 } from './types/translation.types';
+import Textarea from './components/textarea';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -82,7 +83,7 @@ export default function Home() {
         let msg = 'Translation failed';
 
         if (data.quotaFinished) {
-          msg = 'Daily quota exceeded (MyMemory limit reached)';
+          msg = 'Daily quota exceeded (limit reached)';
         } else if (data.responseDetails) {
           msg = `Server error: ${data.responseDetails}`;
         }
@@ -178,14 +179,13 @@ export default function Home() {
             </select>
           </header>
 
-          <textarea
+          <Textarea
             ref={fromLangTextAreaRef}
             value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            className="text-md placeholder:tracking-none placeholder:text-grey-100 h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium"
-            disabled={isLoading}
+            onChange={setInputText}
+            isLoading={isLoading}
             placeholder="Write some text"
-          ></textarea>
+          />
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
             <article className="flex items-center space-x-2">
@@ -243,13 +243,12 @@ export default function Home() {
             </div>
           </header>
 
-          <textarea
+          <Textarea
             ref={toLangTextAreaRef}
-            className="text-md placeholder:tracking-none placeholder:text-grey-100 h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium"
             value={translatedText}
             readOnly
             placeholder="Translation"
-          ></textarea>
+          />
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
             <article className="flex items-center space-x-2">

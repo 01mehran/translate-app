@@ -1,3 +1,5 @@
+import type { RefObject } from 'react';
+
 export interface ITranslationResponse {
   responseData: {
     translatedText: string;
@@ -18,4 +20,13 @@ export interface ITranslateText {
 export interface ILanguages {
   code: string;
   name: string;
+}
+
+export interface ITextareaProps {
+  ref?: RefObject<HTMLTextAreaElement | null>;
+  value: string;
+  onChange?: (value: string) => void;
+  isLoading?: boolean;
+  placeholder?: string;
+  readOnly?: boolean;
 }
