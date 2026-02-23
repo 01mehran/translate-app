@@ -34,12 +34,12 @@ export default function Home() {
     const initialTranslate = async () => {
       try {
         await translateText({
-          text: 'سلام چطوری؟',
-          sourceLang: 'fa',
-          targetLang: 'en',
+          text: 'Hello, how are you?',
+          sourceLang: 'en',
+          targetLang: 'fr',
         });
 
-        setInputText('سلام چطوری؟');
+        setInputText('Hello, how are you?');
       } catch (err) {
         console.error(err);
       }
