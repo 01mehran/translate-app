@@ -4,21 +4,21 @@ import axios from 'axios';
 // Hooks;
 import { useEffect, useRef, useState } from 'react';
 
+// Components:
+import Textarea from './components/textarea';
+import SelectLanguages from './components/SelectLanguages';
+
 // Icons;
 import { FiCopy } from 'react-icons/fi';
 import { GoArrowSwitch } from 'react-icons/go';
 import { HiSpeakerWave } from 'react-icons/hi2';
 import { PiSpinnerGapBold } from 'react-icons/pi';
 
-// Languages;
-import { languages } from './data/languages';
-
 // Types;
 import type {
   ITranslateText,
   ITranslationResponse,
 } from './types/translation.types';
-import Textarea from './components/textarea';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -166,17 +166,8 @@ export default function Home() {
             <p className="cursor-pointer capitalize">Detect Language</p>
             <p className="lan">english</p>
             <p className="lan">spanish</p>
-            <select
-              onChange={(e) => setFromLang(e.target.value)}
-              value={fromLang}
-              className="cursor-pointer border-0 outline-0"
-            >
-              {languages.map((lan) => (
-                <option key={lan.code} value={lan.code}>
-                  {lan.name}
-                </option>
-              ))}
-            </select>
+
+            <SelectLanguages onChange={setFromLang} value={fromLang} />
           </header>
 
           <Textarea
@@ -225,17 +216,7 @@ export default function Home() {
             <div className="flex space-x-3 sm:space-x-4">
               <p className="lan">english</p>
               <p className="lan">spanish</p>
-              <select
-                onChange={(e) => setToLang(e.target.value)}
-                value={toLang}
-                className="cursor-pointer border-0 outline-0"
-              >
-                {languages.map((lan) => (
-                  <option key={lan.code} value={lan.code}>
-                    {lan.name}
-                  </option>
-                ))}
-              </select>
+              <SelectLanguages onChange={setToLang} value={toLang} />
             </div>
 
             <div className="border-grey-200 cursor-pointer rounded-xl border-2 px-2 py-1 text-lg transition-all duration-300 hover:scale-105">

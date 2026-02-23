@@ -30,3 +30,8 @@ export interface ITextareaProps {
   placeholder?: string;
   readOnly?: boolean;
 }
+
+export interface ISelectLanguagesProps {
+  onChange: (value: string) => void;
+  value: string;
+}
