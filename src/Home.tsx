@@ -7,18 +7,18 @@ import { useEffect, useRef, useState } from 'react';
 // Components:
 import Header from './components/Header';
 import SelectLanguages from './components/SelectLanguages';
-import Textarea from './components/textarea';
+import Textarea from './components/Textarea';
 import ActionButtons from './components/ActionButtons';
 
 // Icons;
 import { GoArrowSwitch } from 'react-icons/go';
-import { PiSpinnerGapBold } from 'react-icons/pi';
 
 // Types;
 import type {
   ITranslateText,
   ITranslationResponse,
 } from './types/translation.types';
+import Spinner from './components/Spinner';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -153,7 +153,7 @@ export default function Home() {
       <Header />
 
       <main className="medium:flex-row absolute top-1/2 left-1/2 flex w-full max-w-[95vw] -translate-1/2 flex-col gap-5">
-        {/* Detect Language Box */}
+        {/* Source Box */}
         <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
           <header className="text-grey-100 border-b-grey-200 flex items-center space-x-3 border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap sm:space-x-4">
             <p className="cursor-pointer capitalize">Detect Language</p>
@@ -180,11 +180,7 @@ export default function Home() {
                 onClick={handleTranslate}
                 className={` ${isLoading && 'pointer-events-none cursor-not-allowed opacity-80'} bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2`}
               >
-                {isLoading ? (
-                  <PiSpinnerGapBold className="animate-spin" />
-                ) : (
-                  'Translate'
-                )}
+                {isLoading ? <Spinner /> : 'Translate'}
               </button>
               <div className="text-grey-100 text-[12px] font-medium">
                 <span>19</span>/<span>500</span>
@@ -193,7 +189,7 @@ export default function Home() {
           </footer>
         </div>
 
-        {/* Transleted Box */}
+        {/* Target Box */}
         <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
           <header className="text-grey-100 border-b-grey-200 flex items-center justify-between border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap">
             <div className="flex space-x-3 sm:space-x-4">
