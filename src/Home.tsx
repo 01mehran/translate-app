@@ -30,12 +30,13 @@ export default function Home() {
   useEffect(() => {
     const initialTranslate = async () => {
       try {
-        await translateText({
+        const result = await translateText({
           text: 'Hello, how are you?',
           sourceLang: 'en',
           targetLang: 'fr',
         });
 
+        setTranslatedText(result);
         setInputText('Hello, how are you?');
       } catch (err) {
         console.error(err);
