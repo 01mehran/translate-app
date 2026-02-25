@@ -1,24 +1,18 @@
-// Libraries;
-import axios from 'axios';
-
 // Hooks;
 import { useEffect, useRef, useState } from 'react';
+
+// Services;
+import { translateText } from './services/translationService';
 
 // Components:
 import Header from './components/Header';
 import SelectLanguages from './components/SelectLanguages';
 import Textarea from './components/Textarea';
 import ActionButtons from './components/ActionButtons';
+import Spinner from './components/Spinner';
 
 // Icons;
 import { GoArrowSwitch } from 'react-icons/go';
-
-// Types;
-import type {
-  ITranslateText,
-  ITranslationResponse,
-} from './types/translation.types';
-import Spinner from './components/Spinner';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -51,13 +45,9 @@ export default function Home() {
     initialTranslate();
   }, []);
 
-  const translateText = async ({
-    text,
-    sourceLang,
-    targetLang,
-  }: ITranslateText) => {
-    if (!text.trim()) {
-      setError('Please enter some text to translate');
+  const handleTranslate = async () => {
+    if (!inputText.trim()) {
+      setError('Please enter some text');
       return;
     }
 
@@ -66,71 +56,19 @@ export default function Home() {
     setTranslatedText('');
 
     try {
-      const { data } = await axios.get<ITranslationResponse>(
-        'https://api.mymemory.translated.net/get',
-        {
-          params: {
-            q: text,
-            langpair: `${sourceLang}|${targetLang}`,
-            mt: 1,
-            de: 'mehranmohamadi1311@gmail.com',
-          },
-          headers: {
-            Accept: 'application/json',
-          },
-        },
-      );
+      const result = await translateText({
+        text: inputText,
+        sourceLang: fromLang,
+        targetLang: toLang,
+      });
 
-      if (data.responseStatus !== 200) {
-        let msg = 'Translation failed';
-
-        if (data.quotaFinished) {
-          msg = 'Daily quota exceeded (limit reached)';
-        } else if (data.responseDetails) {
-          msg = `Server error: ${data.responseDetails}`;
-        }
-
-        throw new Error(msg);
-      }
-
-      setTranslatedText(
-        data.responseData.translatedText || '(No translation available)',
-      );
+      setTranslatedText(result);
     } catch (err) {
-      let errorMessage = 'An unknown error occurred';
-
-      if (axios.isAxiosError(err)) {
-        if (err.code === 'ECONNABORTED') {
-          errorMessage = 'Request timed out. Please try again.';
-        } else if (
-          err.response?.status === 429 ||
-          err.response?.status === 403
-        ) {
-          errorMessage = 'Quota exceeded or access restricted.';
-        } else if (err.response) {
-          errorMessage = `Server error (${err.response.status})`;
-        } else if (err.request) {
-          errorMessage = 'Network error. Please check your connection.';
-        } else {
-          errorMessage = err.message || 'Unexpected error';
-        }
-      } else if (err instanceof Error) {
-        errorMessage = err.message;
-      }
-
-      setError(errorMessage);
-      console.error('Translation faild', err);
+      setError(err instanceof Error ? err.message : 'Unknown error');
+      console.error('Translation failed', err);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const handleTranslate = async () => {
-    translateText({
-      text: inputText,
-      sourceLang: fromLang,
-      targetLang: toLang,
-    });
   };
 
   const copyInput = () => {
