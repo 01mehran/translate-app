@@ -31,6 +31,8 @@ export default function Home() {
   const fromLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
   const toLangTextAreaRef = useRef<HTMLTextAreaElement>(null);
 
+  const maxLength = 500;
+
   useEffect(() => {
     const initialTranslate = async () => {
       try {
@@ -169,6 +171,8 @@ export default function Home() {
             onChange={setInputText}
             isLoading={isLoading}
             placeholder="Write some text"
+            maxLength={maxLength}
+            clearError={setError}
           />
 
           <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
@@ -183,7 +187,12 @@ export default function Home() {
                 {isLoading ? <Spinner /> : 'Translate'}
               </button>
               <div className="text-grey-100 text-[12px] font-medium">
-                <span>19</span>/<span>500</span>
+                <span
+                  className={`${inputText.length === maxLength && 'animate-ping text-red-800'}`}
+                >
+                  {inputText.length}
+                </span>
+                /<span>{maxLength}</span>
               </div>
             </article>
           </footer>

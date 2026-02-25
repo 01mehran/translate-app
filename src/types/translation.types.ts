@@ -1,4 +1,4 @@
-import type { RefObject } from 'react';
+import type { Dispatch, RefObject, SetStateAction } from 'react';
 
 export interface ITranslationResponse {
   responseData: {
@@ -29,6 +29,8 @@ export interface ITextareaProps {
   isLoading?: boolean;
   placeholder?: string;
   readOnly?: boolean;
+  maxLength?: number;
+  clearError?: Dispatch<SetStateAction<string | null>>;
 }
 
 export interface ISelectLanguagesProps {
