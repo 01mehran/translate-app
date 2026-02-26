@@ -2,6 +2,14 @@
 
 A lightweight, easy-to-use translation web application that translates text between languages using the free **MyMemory Translated API**.
 
+> Desktop demo 👇
+
+![Demo screenshot](./src/assets/images/desktop-output.png)
+
+> Mobile demo👇
+
+![Demo screenshot](./src/assets/images/mobile-output.png)
+
 ## ✨ Features
 
 - Translate text between **any two languages** supported by MyMemory
