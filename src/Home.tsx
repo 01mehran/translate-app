@@ -24,6 +24,8 @@ export default function Home() {
 
   useEffect(() => {
     const initialTranslate = async () => {
+      setIsLoading(true);
+
       try {
         const result = await translateText({
           text: 'Hello, how are you?',
@@ -35,6 +37,8 @@ export default function Home() {
         setInputText('Hello, how are you?');
       } catch (err) {
         console.error(err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
