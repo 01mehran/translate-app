@@ -42,3 +42,17 @@ export interface IActionButtonsProps {
   handleCopy: () => void;
   disabled: boolean;
 }
+
+export interface ISourceBoxProps {
+  fromLang: string;
+  inputText: string;
+  isLoading: boolean;
+  maxLength: number;
+  setError: Dispatch<SetStateAction<string | null>>;
+  fromLangTextAreaRef: RefObject<HTMLTextAreaElement | null>;
+
+  setInputText: (value: string) => void;
+  setFromLang: (value: string) => void;
+  copyInput: () => void;
+  handleTranslate: () => void;
+}
