@@ -6,13 +6,8 @@ import { translateText } from './services/translationService';
 
 // Components:
 import Header from './components/Header';
-import SelectLanguages from './components/SelectLanguages';
-import Textarea from './components/Textarea';
-import ActionButtons from './components/ActionButtons';
-
-// Icons;
-import { GoArrowSwitch } from 'react-icons/go';
 import SourceLang from './components/SourceLang';
+import TargetLang from './components/TargetLang';
 
 export default function Home() {
   const [inputText, setInputText] = useState<string>('');
@@ -109,30 +104,14 @@ export default function Home() {
         />
 
         {/* Target Box */}
-        <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
-          <header className="text-grey-100 border-b-grey-200 flex items-center justify-between border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap">
-            <div className="flex space-x-3 sm:space-x-4">
-              <p className="lan">english</p>
-              <p className="lan">spanish</p>
-              <SelectLanguages onChange={setToLang} value={toLang} />
-            </div>
-
-            <div className="border-grey-200 cursor-pointer rounded-xl border-2 px-2 py-1 text-lg transition-all duration-300 hover:scale-105">
-              <GoArrowSwitch />
-            </div>
-          </header>
-
-          <Textarea
-            ref={toLangTextAreaRef}
-            value={translatedText}
-            readOnly
-            placeholder="Translation"
-          />
-
-          <footer className="medium:bottom-5 absolute bottom-2 left-0 flex w-full items-end justify-between px-4 sm:px-8">
-            <ActionButtons handleCopy={copyOutput} disabled={isLoading} />
-          </footer>
-        </div>
+        <TargetLang
+          copyOutput={copyOutput}
+          isLoading={isLoading}
+          setToLang={setToLang}
+          toLang={toLang}
+          toLangTextAreaRef={toLangTextAreaRef}
+          translatedText={translatedText}
+        />
 
         {error && (
           <span className="absolute -bottom-12 left-1/2 -translate-1/2 bg-linear-to-b from-red-500 to-red-700 bg-clip-text text-sm font-medium tracking-normal text-nowrap text-transparent">

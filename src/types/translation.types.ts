@@ -56,3 +56,13 @@ export interface ISourceBoxProps {
   copyInput: () => void;
   handleTranslate: () => void;
 }
+
+export interface ITargetLangProps {
+  toLang: string;
+  toLangTextAreaRef: RefObject<HTMLTextAreaElement | null>;
+  translatedText: string;
+  isLoading: boolean;
+
+  copyOutput: () => void;
+  setToLang: (value: string) => void;
+}
