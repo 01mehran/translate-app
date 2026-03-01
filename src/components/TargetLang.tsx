@@ -8,6 +8,7 @@ import type { ITargetLangProps } from '../types/translation.types';
 
 // Icons;
 import { GoArrowSwitch } from 'react-icons/go';
+import CustoomTooltip from './CustoomTooltip';
 
 export default function TargetLang({
   setToLang,
@@ -26,8 +27,9 @@ export default function TargetLang({
           <SelectLanguages onChange={setToLang} value={toLang} />
         </div>
 
-        <div className="border-grey-200 cursor-pointer rounded-xl border-2 px-2 py-1 text-lg transition-all duration-300 hover:scale-105">
+        <div className="translate border-grey-200 transition-scale group cursor-pointer rounded-xl border-2 px-2 py-1 text-lg duration-300 hover:scale-105">
           <GoArrowSwitch />
+          <CustoomTooltip tooltipText="switch" />
         </div>
       </header>
 
