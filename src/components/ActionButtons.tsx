@@ -16,7 +16,7 @@ export default function ActionButtons({
     <article className="flex items-center space-x-2">
       <button
         disabled={disabled}
-        className={`${disabled && 'pointer-events-none'} icons group relative`}
+        className={`${disabled && 'pointer-events-none'} icons group transition-scale relative duration-300 hover:scale-105`}
       >
         <HiSpeakerWave />
         <CustoomTooltip tooltipText="Speech" />
@@ -24,7 +24,7 @@ export default function ActionButtons({
 
       <button
         disabled={disabled}
-        className={`${disabled && 'pointer-events-none'} icons group relative`}
+        className={`${disabled && 'pointer-events-none'} icons group transition-scale relative duration-300 hover:scale-105`}
         onClick={handleCopy}
       >
         <FiCopy />
