@@ -52,7 +52,7 @@ function SourceLang({
           </button>
           <div className="text-grey-100 text-[12px] font-medium">
             <span
-              className={`${inputText.length === maxLength && 'animate-ping text-red-800'}`}
+              className={`${inputText.length === maxLength && 'animate-pulse font-extrabold text-red-600'}`}
             >
               {inputText.length}
             </span>

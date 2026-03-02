@@ -13,6 +13,12 @@
   --breakpoint-medium: 53rem;
 }
 
+@layer base {
+  ::-webkit-scrollbar {
+    @apply hidden;
+  }
+}
+
 @layer components {
   .lan {
     @apply hover:bg-grey-100 cursor-pointer rounded-md px-2 py-1 capitalize hover:text-white;
