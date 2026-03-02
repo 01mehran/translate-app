@@ -25,7 +25,7 @@ export default function Textarea({
       ref={ref}
       value={value}
       onChange={handleChange}
-      className={`text-md placeholder:tracking-none placeholder:text-grey-100 h-full w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium`}
+      className={`text-md placeholder:tracking-none placeholder:text-grey-100 h-2/3 w-full resize-none border-0 pt-3 font-medium tracking-wide text-white outline-0 placeholder:text-sm placeholder:font-medium`}
       disabled={isLoading}
       placeholder={placeholder}
       readOnly={readOnly}
