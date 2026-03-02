@@ -19,9 +19,9 @@ export default function TargetLang({
   isLoading,
 }: ITargetLangProps) {
   return (
-    <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-54 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
-      <header className="text-grey-100 border-b-grey-200 flex items-center justify-between border-b-[1.5px] pb-4 text-sm font-semibold text-nowrap">
-        <div className="flex space-x-3 sm:space-x-4">
+    <div className="bg-primary-100 border-grey-100 medium:h-84 relative h-64 w-full rounded-2xl border px-4 py-4 sm:px-8 sm:py-6">
+      <header className="text-grey-100 border-b-grey-200 flex items-center justify-between border-b-[1.5px] pb-4 text-[12px] font-semibold text-nowrap sm:text-[14px]">
+        <div className="flex space-x-2 sm:space-x-4">
           <p className="lan">english</p>
           <p className="lan">spanish</p>
           <SelectLanguages onChange={setToLang} value={toLang} />

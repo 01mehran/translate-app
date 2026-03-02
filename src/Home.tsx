@@ -92,7 +92,7 @@ export default function Home() {
 
       <Header />
 
-      <main className="medium:flex-row absolute top-1/2 left-1/2 flex w-full max-w-[95vw] -translate-1/2 flex-col gap-5">
+      <main className="medium:flex-row absolute top-1/2 left-1/2 flex w-full max-w-[95vw] -translate-1/2 flex-col gap-2">
         {/* Source Box */}
         <SourceLang
           copyInput={copyInput}
