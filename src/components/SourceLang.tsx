@@ -46,7 +46,7 @@ function SourceLang({
           <button
             disabled={isLoading}
             onClick={handleTranslate}
-            className={` ${isLoading && 'pointer-events-none cursor-not-allowed opacity-80'} bg-sky tracking-w icons cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white sm:px-10 sm:py-2`}
+            className={` ${isLoading && 'pointer-events-none cursor-not-allowed opacity-80'} bg-sky tracking-w icons transition-translate-y cursor-pointer rounded-md border border-gray-300 px-6 py-1.5 font-medium text-white duration-200 hover:translate-y-0.5 active:scale-[99%] sm:px-10 sm:py-2`}
           >
             {isLoading ? <Spinner /> : 'Translate'}
           </button>
