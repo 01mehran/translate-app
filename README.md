@@ -18,6 +18,7 @@ A lightweight, easy-to-use translation web application that translates text betw
 - Shows clear error messages (especially for daily quota)
 - JSON response support for easier parsing
 - No backend needed – pure frontend + API calls
+- It's totally responsive for different screens
 
 ## 🛠️ Tech Stack
 
